@@ -2,10 +2,16 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone/constants.dart';
 import 'package:tiktok_clone/models/user_model.dart';
 
 class AuthController extends GetxController {
+  static AuthController instance = Get.find();
+
+  late Rx<File?> _pickedImage;
+
+  File? get profilePhoto => _pickedImage.value;
   // method to upload image to firebase storage
 
   Future<String> _uploadImageToStorage(File image) async {
@@ -41,6 +47,18 @@ class AuthController extends GetxController {
             email: email,
             password: password,
             profilePhoto: downloadUrl);
+
+        // creating user in firebase firstore
+
+        await firestore
+            .collection("users")
+            .doc(credentials.user!.uid)
+            .set(user.toJson());
+      } else {
+        Get.snackbar(
+          "خطاء في تسجيل الدخول",
+          "الرجاء ملاء كل الحقول",
+        );
       }
     } catch (e) {
       Get.snackbar(
@@ -48,5 +66,39 @@ class AuthController extends GetxController {
         e.toString(),
       );
     }
+  }
+
+  // login user method
+
+  void loginUser(String email, String password) async {
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        await firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: password);
+        print("login success");
+      } else {
+        Get.snackbar(
+          "خطاء في تسجيل الدخول",
+          "خطاء في تسجيل الدخول",
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        "خطاء في تسجيل الدخول",
+        e.toString(),
+      );
+    }
+  }
+
+  // pick image
+
+  void pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      Get.snackbar("صورة الملف", "تم تحميل صورة الملف بنجاح");
+    }
+
+    _pickedImage = Rx<File?>(File(pickedImage!.path));
   }
 }
