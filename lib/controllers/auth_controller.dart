@@ -5,11 +5,38 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone/constants.dart';
 import 'package:tiktok_clone/models/user_model.dart';
+import 'package:tiktok_clone/views/screens/auth/login_screen.dart';
+import 'package:tiktok_clone/views/screens/home_screen.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
 
   late Rx<File?> _pickedImage;
+
+  // firebase user
+
+  late Rx<User?> _user;
+
+  @override
+  void onReady() {
+    super.onReady();
+
+    _user = Rx<User?>(firebaseAuth.currentUser);
+
+    // bind the user to the changes
+    _user.bindStream(firebaseAuth.authStateChanges());
+    // when ever the user changes we will calback method
+
+    ever(_user, _setInitialScreen);
+  }
+
+  _setInitialScreen(User? user) {
+    if (user != null) {
+      Get.offAll(() => const HomeScreen());
+    } else {
+      Get.offAll(() => LoginScreen());
+    }
+  }
 
   File? get profilePhoto => _pickedImage.value;
   // method to upload image to firebase storage
@@ -75,7 +102,6 @@ class AuthController extends GetxController {
       if (email.isNotEmpty && password.isNotEmpty) {
         await firebaseAuth.signInWithEmailAndPassword(
             email: email, password: password);
-        print("login success");
       } else {
         Get.snackbar(
           "خطاء في تسجيل الدخول",
