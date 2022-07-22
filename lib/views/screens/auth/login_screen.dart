@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants.dart';
+import 'package:tiktok_clone/views/screens/auth/signup_screen.dart';
 import 'package:tiktok_clone/views/widgets/text_input_field.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -87,16 +88,15 @@ class LoginScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "ليس لديك حساب ؟",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpScreen(),
+                        ),
+                      );
+                    },
                     child: Text(
                       "إنشاء حساب",
                       style: TextStyle(
@@ -104,6 +104,14 @@ class LoginScreen extends StatelessWidget {
                         color: buttonColor,
                         fontWeight: FontWeight.bold,
                       ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const Text(
+                    "ليس لديك حساب ؟",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey,
                     ),
                   ),
                 ],
