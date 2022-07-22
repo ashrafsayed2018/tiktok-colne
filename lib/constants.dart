@@ -4,6 +4,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/controllers/auth_controller.dart';
 
+const pages = [
+  Text("home screen"),
+  Text("search screen"),
+  Text("add post screen"),
+  Text("messages screen"),
+  Text("profile screen")
+];
+
 const backgroundColor = Colors.black;
 var buttonColor = Colors.red.shade400;
 const borderColor = Colors.grey;
