@@ -13,7 +13,7 @@ class CommentScreen extends StatelessWidget {
 
   final TextEditingController _commentController = TextEditingController();
 
-  CommentController commentController = Get.put(CommentController());
+  final CommentController commentController = Get.put(CommentController());
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,10 @@ class CommentScreen extends StatelessWidget {
                           onTap: () {
                             commentController.likeComment(comment.id);
                           },
-                          child: Icon(Icons.favorite_border,
+                          child: Icon(
+                              comment.likes.contains(authcontroller.user.uid)
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
                               size: 25,
                               color: comment.likes
                                       .contains(authcontroller.user.uid)

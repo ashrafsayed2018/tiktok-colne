@@ -46,8 +46,10 @@ class CommentController extends GetxController {
             .collection("comments")
             .get();
 
+        int len = allDocs.docs.length;
+
         CommentModel comment = CommentModel(
-          id: "comment ${allDocs.docs.length}",
+          id: "Comment $len",
           uid: authcontroller.user.uid,
           username: (userDoc.data() as dynamic)['name'],
           comment: commentText.trim(),
@@ -59,14 +61,16 @@ class CommentController extends GetxController {
             .collection("videos")
             .doc(_postId)
             .collection("comments")
-            .add(comment.toMap());
+            .doc("Comment $len")
+            .set(comment.toMap());
 
         // update comment count
         DocumentSnapshot snap =
             await firestore.collection("videos").doc(_postId).get();
 
-        await firestore.collection("videos").doc(_postId).update(
-            {"commentCount": (snap.data() as dynamic)['commentCount'] + 1});
+        await firestore.collection("videos").doc(_postId).update({
+          "commentCount": (snap.data() as dynamic)['commentCount'] + 1,
+        });
       }
     } catch (e) {
       Get.snackbar("خطاء في اضافة تعليق", e.toString());
@@ -77,14 +81,14 @@ class CommentController extends GetxController {
   likeComment(String commentId) async {
     try {
       var uid = authcontroller.user.uid;
-      DocumentSnapshot snap = await firestore
+      DocumentSnapshot doc = await firestore
           .collection("videos")
           .doc(_postId)
           .collection("comments")
           .doc(commentId)
           .get();
 
-      if ((snap.data() as dynamic)['likes'].contains(uid)) {
+      if ((doc.data() as dynamic)['likes'].contains(uid)) {
         await firestore
             .collection("videos")
             .doc(_postId)
@@ -93,7 +97,6 @@ class CommentController extends GetxController {
             .update({
           "likes": FieldValue.arrayRemove([uid])
         });
-        Get.snackbar("نجاح", "تم الغاء الإعجاب");
       } else {
         await firestore
             .collection("videos")
@@ -103,10 +106,10 @@ class CommentController extends GetxController {
             .update({
           "likes": FieldValue.arrayUnion([uid])
         });
-        Get.snackbar("نجاح", "لقد قمت بالاعجاب بالتعليق");
       }
     } catch (e) {
-      Get.snackbar("خطاء في تعليق", e.toString());
+      Get.snackbar("خطاء في الاعجاب",
+          e.toString()); // if there is an error, show the error in a snackbar
     }
   }
 }
