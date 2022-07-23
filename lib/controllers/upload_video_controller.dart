@@ -85,7 +85,7 @@ class UploadVideoController extends GetxController {
         thumbnail: thumbnailUrl,
         caption: caption,
         likes: [],
-        commentCount: '0',
+        commentCount: "0",
         songName: songName,
         shareCount: 0,
       );

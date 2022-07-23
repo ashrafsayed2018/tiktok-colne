@@ -4,10 +4,10 @@ class VideoModel {
   String id,
       uid,
       username,
-      commentCount,
       songName,
       caption,
       videoUrl,
+      commentCount,
       thumbnail,
       profilePhoto;
   List likes;
@@ -50,7 +50,7 @@ class VideoModel {
       uid: snapshot['uid'],
       username: snapshot['username'],
       likes: snapshot['likes'],
-      commentCount: snapshot['commentCount'],
+      commentCount: snapshot['commentCount'].toString(),
       songName: snapshot['songName'],
       caption: snapshot['caption'],
       videoUrl: snapshot['videoUrl'],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiktok_clone/constants.dart';
 import 'package:tiktok_clone/controllers/video_controller.dart';
+import 'package:tiktok_clone/views/screens/comment_screen.dart';
 import 'package:tiktok_clone/views/widgets/circle_animation.dart';
 import 'package:tiktok_clone/views/widgets/video_player_item.dart';
 
@@ -178,7 +179,15 @@ class VideoScreen extends StatelessWidget {
                                 Column(
                                   children: [
                                     InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CommentScreen(
+                                                    postId: data.id,
+                                                  )),
+                                        );
+                                      },
                                       child: const Icon(
                                         Icons.comment,
                                         size: 40,
@@ -189,7 +198,7 @@ class VideoScreen extends StatelessWidget {
                                       height: 10,
                                     ),
                                     Text(
-                                      data.commentCount,
+                                      data.commentCount.toString(),
                                       style: const TextStyle(
                                         fontSize: 15,
                                         color: Colors.white,
