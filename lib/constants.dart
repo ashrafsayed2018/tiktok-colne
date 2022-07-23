@@ -6,12 +6,12 @@ import 'package:tiktok_clone/controllers/auth_controller.dart';
 import 'package:tiktok_clone/views/screens/add_video_screen.dart';
 import 'package:tiktok_clone/views/screens/video_screen.dart';
 
-const pages = [
+List pages = [
   VideoScreen(),
-  Text("search screen"),
-  AddVideoScreen(),
-  Text("messages screen"),
-  Text("profile screen")
+  const Text("search screen"),
+  const AddVideoScreen(),
+  const Text("messages screen"),
+  const Text("profile screen")
 ];
 
 const backgroundColor = Colors.black;
